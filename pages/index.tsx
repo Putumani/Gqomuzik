@@ -37,6 +37,8 @@ export default function Home() {
       </div>
 
       <div>
+      <h1>Welcome to the Gqomuzik!</h1>
+        <AudioPlayer id={"Asake-And-Olamide-Amapiano"} />
         <AudioUploader/>
       </div>
     </main>
