@@ -45,10 +45,8 @@ const Home: React.FC = () => {
   <div className="w-full lg:w-1/3 p-4 rounded-lg mx-auto flex justify-center items-center items-stretch border border-black mb-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
     <div className="bg-dark-gray-900 text-white p-4 rounded-lg flex-1">
       <div>
-        <h1 className="text-4xl font-bold text-black mb-8">Upload Music</h1>
-        <div className="flex flex-col items-center">
-          <AudioUploader />
-        </div>
+        <h1 className="text-4xl font-bold text-black mb-8">Music</h1>
+        {/* Add albums content here */}
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center">
         <img
           className="h-8 w-8 mr-2"
-          src="/PUTUMANI.png"
+          src="/gqomuzik.png"
           alt="Logo"
         />
         <span className="text-lg font-bold">Gqomuzik</span>
