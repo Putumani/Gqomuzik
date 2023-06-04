@@ -1,46 +1,71 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import AudioUploader from '@/components/AudioUploader'
-import AudioPlayer from '@/components/AudioPlayer'
-import AudioPage from './audios/[id]'
+import React, { useEffect, useState } from 'react';
+import AudioUploader from '@/components/AudioUploader';
+import AudioPlayer from '@/components/AudioPlayer';
+import Navbar from '@/components/NavBar';
+import Footer from '@/components/Footer';
 
-const inter = Inter({ subsets: ['latin'] })
+interface Audio {
+  id: string;
+  url: string;
+}
 
-export default function Home() {
+const Home: React.FC = () => {
+  const [audios, setAudios] = useState<Audio[]>([]);
+
+  useEffect(() => {
+    fetchExclusives();
+  }, []);
+
+  const fetchExclusives = async (): Promise<void> => {
+    try {
+      const response = await fetch('/api/exclusives');
+      const data = await response.json();
+      console.log('Fetched exclusives:', data);
+
+      const audiosWithUrls: Audio[] = data.map((id: string) => ({
+        id,
+        url: `/audios/${id}.mp3`,
+      }));
+
+      setAudios(audiosWithUrls);
+    } catch (error) {
+      console.error('Error fetching exclusives:', error);
+    }
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="flex flex-col items-center justify-between min-h-screen bg-gray-200 text-white">
+  <Navbar />
+  <div className="mt-8" /> {/* Add a div with margin-top for space */}
+  <main className="flex flex-col lg:flex-row items-start justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 flex-1 w-full max-w-screen-xl mx-auto">
+  <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
+    <h1 className="text-4xl font-bold text-black mb-8">Most Downloads</h1>
+    {/* Add most downloads content here */}
+  </div>
+  <div className="w-full lg:w-1/3 p-4 rounded-lg mx-auto flex justify-center items-center items-stretch border border-black mb-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
+    <div className="bg-dark-gray-900 text-white p-4 rounded-lg flex-1">
+      <div>
+        <h1 className="text-4xl font-bold text-black mb-8">Upload Music</h1>
+        <div className="flex flex-col items-center">
+          <AudioUploader />
         </div>
       </div>
+    </div>
+  </div>
+  <div className="w-full lg:w-1/3 p-4 rounded-lg border border-black mb-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
+    <h1 className="text-4xl font-bold text-black mb-8">Albums</h1>
+    {/* Add albums content here */}
+  </div>
+</main>
 
-      <div>
-      <h1>Welcome to the Gqomuzik!</h1>
-        <AudioPlayer id={"Asake-And-Olamide-Amapiano"} />
-        <AudioUploader/>
-      </div>
-    </main>
-  )
-}
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Home;
+
+
+
+      

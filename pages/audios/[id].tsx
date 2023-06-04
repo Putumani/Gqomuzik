@@ -7,13 +7,16 @@ function AudioPage() {
   const { id } = router.query as { id: string };
   console.log({ id });
 
-  return <AudioPlayer id={id} />;
+  return <AudioPlayer id={id} url={""} />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: { query: context.query},
     }
-}
+  }
 
-export default AudioPage;
+  export default AudioPage;
+
+
+  
