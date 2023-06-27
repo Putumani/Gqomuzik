@@ -43,7 +43,7 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
     };
 
     try {
-      const response = await axios.post('/api/audios', data, config);
+      const response = await axios.post('/api/uploads', data, config);
       const uploadedAudio: Audio = response.data;
       handleAudioUpload(uploadedAudio);
       closeUploader();

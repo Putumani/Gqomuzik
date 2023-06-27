@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import AudioUploader from '@/components/AudioUploader';
 import Navbar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AudioPlayer from '@/components/AudioPlayer';
+import AudioUploader from '@/components/AudioUploader';
+import MusicList from '@/components/MusicList';
 
 interface Audio {
   id: string;
@@ -47,6 +48,7 @@ const Home: React.FC = () => {
       <Navbar toggleUploader={toggleUploader} />
       <div className="mt-8" /> {/* Add a div with margin-top for space */}
       <main className="flex flex-col lg:flex-row items-start justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 flex-1 w-full max-w-screen-xl mx-auto">
+        
         {/* Most Downloads Component */}
         <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
           <h1 className="text-4xl font-bold text-black mb-8">Most Downloads</h1>
@@ -55,6 +57,7 @@ const Home: React.FC = () => {
           </div>
           {/* Add most downloads content here */}
         </div>
+
         {/* Music Component */}
         <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
           <h1 className="text-4xl font-bold text-black mb-8">Music</h1>
@@ -62,16 +65,18 @@ const Home: React.FC = () => {
             <hr className="border-t border-black w-full" />
           </div>
           {/* Render the list of audios */}
+          <MusicList/>
         </div>
+
         {/* Music Player Component */}
         <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
           <h1 className="text-4xl font-bold text-black mb-8">Music Player</h1>
           <div className="mb-4">
           <hr className="border-black" />
           <div>
-            <h2 className="text-center text-sky-500 font-mono flex gap-2 mx-auto">
+            <h2 className="text-center text-black font-mono flex gap-2 mx-auto">
               <div>Song By:</div>
-              <a className="underline text-blue-600" href="https://jaysudo.com" target="_blank" rel="noopener noreferrer">
+              <a className="underline text-black-600" href="https://jaysudo.com" target="_blank" rel="noopener noreferrer">
                 DJ Jay Sudo
               </a>
             </h2>
@@ -81,8 +86,6 @@ const Home: React.FC = () => {
             />
             </div>
           </div>
-
-          {/* Add albums content here */}
         </div>
 
         {/* Upload Card */}

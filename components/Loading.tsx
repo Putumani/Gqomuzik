@@ -9,7 +9,7 @@ interface LoadingProps {
 
 const Loading: FC<LoadingProps> = ({ loaded, title }) => (
   <div className="flex gap-2 [&>*]:my-auto">
-    {loaded ? <FaMusic size={20} color="magenta" /> : <ClockLoader size={20} color="white" />}
+    {loaded ? <FaMusic size={20} color="magenta" /> : <ClockLoader size={20} color="black" />}
     <div>{loaded ? title : 'Loading...'}</div>
   </div>
 );

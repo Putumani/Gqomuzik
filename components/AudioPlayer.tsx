@@ -173,7 +173,7 @@ class AudioPlayer extends Component<AudioPlayerProps, AudioPlayerState> {
           volume={this.state.volume}
           ref={(ref) => (this.player = ref)}
         />
-        <div className='bg-[#101010] text-sky-400 font-mono rounded-lg flex flex-col gap-4 p-4'>
+        <div className='text-black font-mono rounded-lg flex flex-col gap-4 p-4'>
           <div className='flex justify-around'>
             <Loading loaded={this.state.loaded} title={this.props.title} />
             <div>
