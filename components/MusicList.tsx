@@ -5,29 +5,38 @@ const MusicList = () => {
 
   useEffect(() => {
     const fetchSongs = async () => {
-      const response = await fetch('/api/songs'); // Update the URL
+      const response = await fetch('/api/songs');
       const songFiles = await response.json();
       setSongs(songFiles);
     };
-      
+
     fetchSongs();
   }, []);
 
   return (
     <div>
       <ul className="text-black">
-        {songs.map((song, index) => (
-          <li
-            key={index}
-            className="py-2 border-b border-gray-400" // Add border classes
-          >
-            {song}
-          </li>
-        ))}
+        {songs.map((song, index) => {
+          const [artist, songName] = song.split(' - ');
+
+          return (
+            <li key={index} className="py-2 border-b border-gray-400">
+              <div>
+                <span className="font-bold">{artist}</span>
+              </div>
+              <div>
+                <span>{songName}</span>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 };
 
 export default MusicList;
+
+
+
 
