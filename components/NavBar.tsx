@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleUploader }) => {
       <div className="flex items-center">
         {/*Upload button*/}
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md ml-4 hover:bg-orange-400"
+          className="px-4 py-2 bg-orange-500 text-white rounded-md ml-4 hover:bg-orange-300"
           onClick={toggleUploader}
         >
           Upload
