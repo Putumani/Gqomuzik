@@ -28,10 +28,6 @@ const Navbar: React.FC<NavbarProps> = ({ toggleUploader }) => {
         >
           Upload
         </button>
-        {/*User Profile*/}
-        <div className="w-8 h-8 bg-gray-500 rounded-full">
-          <img src="/user-profile-avatar-svgrepo-com.svg" alt="Logo" />
-        </div>
       </div>
     </nav>
   );
