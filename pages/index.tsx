@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Navbar from '@/components/NavBar';
-import Footer from '@/components/Footer';
-import AudioPlayer from '@/components/AudioPlayer';
 import AudioUploader from '@/components/AudioUploader';
 import MusicList from '@/components/MusicList';
+import Layout from '@/components/Layout';
 
 interface Audio {
   id: string;
@@ -12,7 +10,6 @@ interface Audio {
   artist: string;
   songName: string;
 }
-
 
 const Home: React.FC = () => {
   const [audios, setAudios] = useState<Audio[]>([]);
@@ -41,51 +38,19 @@ const Home: React.FC = () => {
 
   const handleAudioUpload = (audio: Audio) => {
     setAudios((prevAudios) => [...prevAudios, audio]);
-  };  
+  };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen bg-gradient-to-br from-gray-300 to-gray-200 text-white">
-      <Navbar toggleUploader={toggleUploader} />
-      <div className="mt-8" /> {/* Add a div with margin-top for space */}
-      <main className="flex flex-col lg:flex-row items-start justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 flex-1 w-full max-w-screen-xl mx-auto">
-        
-        {/* Most Downloads Component */}
-        <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
-          <h1 className="text-4xl font-bold text-black mb-8">Most Downloads</h1>
-          <div className="mb-4">
-            <hr className="border-black" />
-          </div>
-          {/* Add most downloads content here */}
-        </div>
-
+    <div className="mt-8">
+      <main>
         {/* Music Component */}
-        <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
+        <div className="w-full lg:w-1/8 p-5 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
           <h1 className="text-4xl font-bold text-black mb-8">Music</h1>
           <div className="mb-4">
             <hr className="border-t border-black w-full" />
           </div>
           {/* Render the list of audios */}
-          <MusicList/>
-        </div>
-
-        {/* Music Player Component */}
-        <div className="w-full lg:w-1/4 p-4 rounded-lg mb-8 lg:mb-0 border border-black mr-4 bg-opacity-0 backdrop-filter backdrop-blur-lg">
-          <h1 className="text-4xl font-bold text-black mb-8">Music Player</h1>
-          <div className="mb-4">
-          <hr className="border-black" />
-          <div>
-            <h2 className="text-center text-black font-mono flex gap-2 mx-auto">
-              <div>Song By:</div>
-              <a className="underline text-black-600" href="https://jaysudo.com" target="_blank" rel="noopener noreferrer">
-                DJ Jay Sudo
-              </a>
-            </h2>
-            <AudioPlayer
-              title="Take Me - DJ Jay Sudo"
-              src="https://cdn.designly.biz/jaysudo/music/take-me/song.mp3"
-            />
-            </div>
-          </div>
+          <MusicList />
         </div>
 
         {/* Upload Card */}
@@ -104,11 +69,15 @@ const Home: React.FC = () => {
           </div>
         )}
       </main>
-      <Footer />
     </div>
   );
 };
 
 export default Home;
+
+
+
+
+
 
 
