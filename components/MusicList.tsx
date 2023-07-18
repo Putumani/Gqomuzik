@@ -26,6 +26,10 @@ const MusicList = () => {
     return { artist: '', songName: song };
   };
 
+  const removeFileExtension = (fileName: string) => {
+    return fileName.replace('.mp3', '');
+  };
+
   return (
     <div>
       <ul className="text-black">
@@ -38,7 +42,7 @@ const MusicList = () => {
                 <span className="font-bold">{artist}</span>
               </div>
               <div>
-                <span>{songName}</span>
+                <span>{removeFileExtension(songName)}</span>
               </div>
             </li>
           );
@@ -49,6 +53,7 @@ const MusicList = () => {
 };
 
 export default MusicList;
+
 
 
 
