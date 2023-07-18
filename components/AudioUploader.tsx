@@ -20,9 +20,12 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   async function handleSubmit() {
-    const data = new FormData();
+    if (!file || file.type !== 'audio/mpeg') {
+      setError('Please select an .mp3 file.');
+      return;
+    }
 
-    if (!file) return;
+    const data = new FormData();
 
     setSubmitting(true);
 
@@ -52,17 +55,11 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
   }
 
   function handleSetFile(event: React.ChangeEvent<HTMLInputElement>) {
-    const selectedFile = event.target.files?.[0];
+    const files = event.target.files;
 
-    if (selectedFile) {
-      const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
-      if (fileExtension !== 'mp3') {
-        setError('Please select an .mp3 file');
-        setFile(undefined);
-      } else {
-        setFile(selectedFile);
-        setError(null);
-      }
+    if (files?.length) {
+      setFile(files[0]);
+      setError(null);
     }
   }
 
@@ -75,9 +72,9 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
         <form action="POST">
           <div className="mb-4">
             <label htmlFor="file" className="text-white">
-              File (.mp3 only)
+              File
             </label>
-            <input type="file" id="file" accept=".mp3" onChange={handleSetFile} className="py-2" />
+            <input type="file" id="file" onChange={handleSetFile} className="py-2" accept=".mp3" />
           </div>
           <div className="flex justify-between">
             <button
@@ -90,7 +87,7 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={!file || submitting || !!error}
+              disabled={!file || submitting}
               className="px-4 py-2 bg-blue-500 rounded-md text-white disabled:bg-gray-500 disabled:cursor-not-allowed"
             >
               Upload
@@ -103,6 +100,7 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
 };
 
 export default AudioUploader;
+
 
 
 
