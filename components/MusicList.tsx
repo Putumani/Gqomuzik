@@ -32,7 +32,7 @@ const MusicList = () => {
 
   return (
     <div>
-      <ul className="text-black">
+      <ul className="text-black w-full">
         {songs.map((song, index) => {
           const { artist, songName } = getArtistAndSongName(song);
 
