@@ -1,5 +1,4 @@
-import datetime
-import time
+import os
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -16,36 +15,46 @@ def video_upload():
     credentials = authenticate()
     youtube = build('youtube', 'v3', credentials=credentials)
 
-    video_file = './videos/Ihamba-feat-Witness-Gvng.mp4'
-    media_file = MediaFileUpload(video_file)
+    video_dir = './videos'
+    video_files = [file for file in os.listdir(video_dir) if file.endswith('.mp4')]
 
-    request_body = {
-        'snippet': {
-            'title': 'youtube video upload',
-            'description': 'testing youtube api to upload a video',
-            'categoryId': '10',  
-            'tags': ['youtube api', 'upload a video'],
-        },
-        'status': {
-            'privacyStatus': 'private',
-            'selfDeclaredMadeForKids': False
-        },
-        'notifySubscribers': False
-    }
+    if not video_files:
+        print('No video files found in the "videos" directory.')
+        return
 
-    try:
-        # Perform the video upload request with retries
-        response_video_upload = youtube.videos().insert(
-            part='snippet,status',
-            body=request_body,
-            media_body=media_file
-        ).execute(num_retries=5)  # Use num_retries to retry on failure
+    for video_file in video_files:
+        media_file = MediaFileUpload(os.path.join(video_dir, video_file))
 
-        uploaded_video_id = response_video_upload.get('id')
-        print("Video uploaded! Video ID:", uploaded_video_id)
-    except Exception as e:
-        print('An error occurred during video upload:', e)
+        request_body = {
+            'snippet': {
+                'title': 'youtube video upload',
+                'description': 'testing youtube api to upload a video',
+                'categoryId': '10',
+                'tags': ['youtube api', 'upload a video'],
+            },
+            'status': {
+                'privacyStatus': 'private',
+                'selfDeclaredMadeForKids': False
+            },
+            'notifySubscribers': False
+        }
+
+        try:
+            response_video_upload = youtube.videos().insert(
+                part='snippet,status',
+                body=request_body,
+                media_body=media_file
+            ).execute(num_retries=5)  
+
+            uploaded_video_id = response_video_upload.get('id')
+            print(f'Video {video_file} uploaded! Video ID:', uploaded_video_id)
+
+            os.remove(os.path.join(video_dir, video_file))
+            print(f'{video_file} deleted from the "videos" directory.')
+        except Exception as e:
+            print(f'An error occurred during video {video_file} upload:', e)
 
 if __name__ == "__main__":
     video_upload()
+
 
