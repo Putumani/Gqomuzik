@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 
 interface Audio {
@@ -29,6 +29,23 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
 
     setSubmitting(true);
 
+    // Generate a random audioId here, or use an ID library if you have one.
+    function generateRandomId(): string {
+      const length = 10; 
+      const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+    
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+      }
+    
+      return result;
+    }
+    
+    const audioId = generateRandomId(); 
+
+    data.append('audioId', audioId); // Add the audioId to the FormData.
     data.append('file', file);
 
     const config: AxiosRequestConfig = {
