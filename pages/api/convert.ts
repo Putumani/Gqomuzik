@@ -4,10 +4,8 @@ import { spawn } from 'child_process';
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { audioId } = req.body;
-    console.log(audioId)
 
     if (!audioId) {
-      console.log("we're here")
       return res.status(400).json({ error: 'Invalid audioId provided' });
     }
 

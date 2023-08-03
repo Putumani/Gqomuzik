@@ -36,7 +36,7 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
       handleAudioUpload(uploadedAudio);
       
       // Call the new API endpoint to convert MP3 to MP4
-      await axios.post('/api/convert', { audioId: uploadedAudio.id });
+      await axios.post('/api/convert', { audioId: uploadedAudio });
   
       closeUploader();
     } catch (e: any) {
