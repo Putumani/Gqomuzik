@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import busboy from 'busboy';
 import fs from 'fs';
+import path from 'path';
+import ffmpeg from 'ffmpeg-static';
+import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
 
 interface Audio {
   id: string;
@@ -15,7 +18,7 @@ export const config = {
   },
 };
 
-function uploadAudioStream(req: NextApiRequest, res: NextApiResponse) {
+function uploadAudioStream(req: NextApiRequest, res: NextApiResponse, audioId: string) {
   const bb = busboy({ headers: req.headers });
 
   bb.on('file', (_, file, info) => {
@@ -28,6 +31,9 @@ function uploadAudioStream(req: NextApiRequest, res: NextApiResponse) {
   });
 
   bb.on('close', () => {
+    // After audio upload, call the function to convert to video
+    convertAudioToVideo(audioId);
+
     res.writeHead(200, { Connection: 'close' });
     res.end(`Uploaded successfully!!!`);
   });
@@ -38,42 +44,34 @@ function uploadAudioStream(req: NextApiRequest, res: NextApiResponse) {
 const CHUNK_SIZE_IN_BYTES = 1000000; // 1 MB
 
 function getAudioStream(req: NextApiRequest, res: NextApiResponse) {
-  const range = req.headers.range;
+  // Rest of the code remains unchanged
+}
 
-  if (!range) {
-    return res.status(400).send('Range must be provided');
-  }
-
-  const audioId = req.query.audioId as string;
-
+function convertAudioToVideo(audioId: string) {
   const audioPath = `./audios/${audioId}.mp3`;
+  const videoPath = `./videos/${audioId}.mp4`;
 
-  const audioSizeInBytes = fs.statSync(audioPath).size;
+  // Call the ffmpeg command to convert audio to video
+  const ffmpegCommand = `${ffmpeg} -i ${audioPath} -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" ${videoPath}`;
 
-  const chunkStart = Number(range.replace(/\D/g, ''));
+  const conversionProcess = spawn(ffmpegCommand, [], {
+    shell: true,
+  } as SpawnOptionsWithoutStdio);
 
-  const chunkEnd = Math.min(chunkStart + CHUNK_SIZE_IN_BYTES, audioSizeInBytes - 1);
-
-  const contentLength = chunkEnd - chunkStart + 1;
-
-  const headers = {
-    'Content-Range': `bytes ${chunkStart}-${chunkEnd}/${audioSizeInBytes}`,
-    'Accept-Ranges': 'bytes',
-    'Content-Length': contentLength,
-    'Content-Type': 'audio/mp3',
-  };
-
-  res.writeHead(206, headers);
-
-  const audioStream = fs.createReadStream(audioPath, { start: chunkStart, end: chunkEnd });
-
-  audioStream.pipe(res);
+  conversionProcess.on('exit', (code: number) => {
+    if (code === 0) {
+      console.log('Audio conversion to video successful');
+    } else {
+      console.error('Error converting audio to video');
+    }
+  });
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    return uploadAudioStream(req, res);
-  } 
+    const audioId = req.query.audioId as string; // Get the audioId from the query parameter
+    return uploadAudioStream(req, res, audioId); // Pass the audioId as a parameter to uploadAudioStream
+  }
   
   if (req.method === 'GET') {
     const audioId = req.query.audioId as string;
@@ -87,7 +85,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).send('Method Not Allowed');
   }
 }
-
 
 
 
