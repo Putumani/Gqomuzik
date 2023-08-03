@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 
 interface Audio {
@@ -19,6 +19,36 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  async function handleAudioConversion() {
+    if (!file || file.type !== 'audio/mpeg') {
+      setError('Please select an .mp3 file.');
+      return;
+    }
+  
+    const data = new FormData();
+    setSubmitting(true);
+  
+    data.append('file', file);
+  
+    try {
+      const response = await axios.post('/api/uploads', data);
+      const uploadedAudio: Audio = response.data;
+      handleAudioUpload(uploadedAudio);
+      
+      // Call the new API endpoint to convert MP3 to MP4
+      await axios.post('/api/convert', { audioId: uploadedAudio.id });
+  
+      closeUploader();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setSubmitting(false);
+      setProgress(0);
+    }
+  }
+
+
+  
   async function handleSubmit() {
     if (!file || file.type !== 'audio/mpeg') {
       setError('Please select an .mp3 file.');
@@ -29,23 +59,6 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
 
     setSubmitting(true);
 
-    // Generate a random audioId here, or use an ID library if you have one.
-    function generateRandomId(): string {
-      const length = 10; 
-      const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let result = '';
-    
-      for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        result += characters.charAt(randomIndex);
-      }
-    
-      return result;
-    }
-    
-    const audioId = generateRandomId(); 
-
-    data.append('audioId', audioId); // Add the audioId to the FormData.
     data.append('file', file);
 
     const config: AxiosRequestConfig = {
@@ -59,10 +72,12 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
     };
 
     try {
-      const response = await axios.post('/api/uploads', data, config);
+      const response = await axios.post('/api/uploads', data);
       const uploadedAudio: Audio = response.data;
       handleAudioUpload(uploadedAudio);
-      closeUploader();
+  
+      // Call the new function for MP3 to MP4 conversion
+      await handleAudioConversion();
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -117,7 +132,4 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
 };
 
 export default AudioUploader;
-
-
-
 
