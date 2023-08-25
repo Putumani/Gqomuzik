@@ -22,11 +22,10 @@ const Navbar: React.FC<NavbarProps> = ({ toggleUploader, scrollToMusicList }) =>
         </div>
         <div className="flex items-center">
           <a
-            className="relative text-black cursor-pointer"
-            onClick={scrollToMusicList} 
+            className="text-black relative cursor-pointer inline-block border-b-2 border-black transition-colors hover:border-orange-500"
+            onClick={scrollToMusicList}
           >
             Muzik
-            <span className="absolute w-full h-px bg-orange-500 left-0 bottom-0 transform scale-x-0 transition-transform origin-left group-hover:scale-x-100"></span>
           </a>
           <button
             className="px-4 py-2 bg-orange-500 text-white rounded-md ml-4 hover:bg-orange-300"
