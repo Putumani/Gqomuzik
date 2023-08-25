@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from './NavBar';
 
 interface HeroComponentProps {
   toggleUploader: () => void;
@@ -8,37 +7,30 @@ interface HeroComponentProps {
 const HeroComponent: React.FC<HeroComponentProps> = ({ toggleUploader }) => {
   return (
     <div className="w-full h-screen relative">
-      {/* Hero background */}
       <div
         className="absolute inset-0 bg-cover"
-        style={{ backgroundImage: 'url(/gqomuzik_hero.jpeg)' }}
+        style={{
+          backgroundImage: 'url(/gqomuzik_hero.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       />
 
-      {/* Navbar content */}
-      <div className="absolute top-0 left-0 right-0 px-4 py-2">
-        <Navbar toggleUploader={toggleUploader} />
-      </div>
-
-      {/* Hero content */}
-      <div className="relative h-1/4">
-        <div className="max-w-3xl mx-auto px-6 py-16 text-white">
-          <h1 className="text-4xl font-bold mb-8">Welcome to Gqomuzik!</h1>
-          <p className="text-xl mb-4">
-            To upload your own music, click on the "Upload" button in the navigation bar above.
+      <div className="absolute max-w-3xl mx-auto px-6 py-16 text-black" style={{ width: '40%', top: 50, left: 50 }}>
+        <div className="bg-black bg-opacity-40 p-4 rounded-lg">
+          <p className="text-3xl font-bold mb-4">
+          Discover the Ultimate Hub for Gqom Music Enthusiasts: 
+          Your Gateway to Download and Share Muzik!
           </p>
-          <p className="text-xl mb-4">
-            Once you've uploaded your music, it will be available for others to listen and download.
-          </p>
-          <p className="text-xl mb-8">
-            To listen and download a song, simply click on the song of your choice below, and you'll be directed to the download page.
-          </p>
-        </div>
+         </div> 
       </div>
     </div>
   );
 };
 
 export default HeroComponent;
+
+
 
 
 

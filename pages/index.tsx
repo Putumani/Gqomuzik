@@ -44,7 +44,6 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gradient-to-br from-gray-300 to-gray-200 text-white">
-      {/* Pass toggleUploader to HeroComponent */}
       <HeroComponent toggleUploader={toggleUploader} />
       <Navbar toggleUploader={toggleUploader} />
       <div className="my-8" />
@@ -79,3 +78,5 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+
