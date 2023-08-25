@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Footer from '@/components/Footer';
 import AudioUploader from '@/components/AudioUploader';
@@ -16,6 +16,13 @@ interface Audio {
 const Home: React.FC = () => {
   const [audios, setAudios] = useState<Audio[]>([]);
   const [showUploader, setShowUploader] = useState<boolean>(false);
+  const musicListRef = useRef<HTMLDivElement>(null); // Create a ref for the MusicList component
+
+  const scrollToMusicList = () => {
+    if (musicListRef.current) {
+      musicListRef.current.scrollIntoView({ behavior: 'smooth' }); // Scroll to the MusicList component
+    }
+  };
 
   const toggleUploader = () => {
     setShowUploader((prevValue) => !prevValue);
@@ -45,7 +52,7 @@ const Home: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gradient-to-br from-gray-300 to-gray-200 text-white">
       <HeroComponent toggleUploader={toggleUploader} />
-      <Navbar toggleUploader={toggleUploader} />
+      <Navbar toggleUploader={toggleUploader} scrollToMusicList={scrollToMusicList} /> 
       <div className="my-8" />
       <div className="w-full lg:w-1/2 p-4 rounded-lg mb-8 lg:mb-0 border border-black bg-opacity-0 backdrop-filter backdrop-blur-lg">
         <h1 className="text-4xl font-bold text-center text-black mb-8">Muzik</h1>
@@ -53,7 +60,9 @@ const Home: React.FC = () => {
           <hr className="border-t border-black w-full" />
         </div>
         <div className="w-full">
+          <div ref={musicListRef}> 
           <MusicList />
+          </div>
         </div>
       </div>
       <div className="my-8" />
