@@ -34,9 +34,6 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
       const response = await axios.post('/api/uploads', data);
       const uploadedAudio: Audio = response.data;
       handleAudioUpload(uploadedAudio);
-      
-      // Call the new API endpoint to convert MP3 to MP4
-      await axios.post('/api/convert', { audioId: uploadedAudio });
   
       closeUploader();
     } catch (e: any) {
@@ -97,16 +94,28 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-      <div className="w-96 p-8 bg-gray-800 rounded-lg">
+      <div className="w-120 p-8 bg-gray-800 rounded-lg"> 
         <h2 className="text-xl font-bold text-white mb-4">Upload Music</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {submitting && <p className="text-white mb-4">{progress}%</p>}
         <form action="POST">
-          <div className="mb-4">
-            <label htmlFor="file" className="text-white">
+          <div className="mb-6"> 
+            <label htmlFor="artist" className="text-white block">
+              Artist
+            </label>
+            <input type="text" id="artist" placeholder="Artist Name" className="py-2 w-full bg-gray-700 rounded-md" />
+          </div>
+          <div className="mb-6"> 
+            <label htmlFor="songName" className="text-white block">
+              Song Name
+            </label>
+            <input type="text" id="songName" placeholder="Song Name" className="py-2 w-full bg-gray-700 rounded-md" />
+          </div>
+          <div className="mb-6"> 
+            <label htmlFor="file" className="text-white block">
               File
             </label>
-            <input type="file" id="file" onChange={handleSetFile} className="py-2" accept=".mp3" />
+            <input type="file" id="file" onChange={handleSetFile} className="py-2 w-full bg-gray-700 rounded-md" accept=".mp3" />
           </div>
           <div className="flex justify-between">
             <button
@@ -128,6 +137,7 @@ const AudioUploader: React.FC<AudioUploaderProps> = ({ closeUploader, handleAudi
         </form>
       </div>
     </div>
+
   );
 };
 

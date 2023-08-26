@@ -1,3 +1,4 @@
+import AudioPlayer from '@/pages/audioplayer'; // Make sure to adjust the import path
 import { useEffect, useState } from 'react';
 
 const MusicList = () => {
@@ -35,14 +36,18 @@ const MusicList = () => {
     'Artist2 - Song2.mp3': '/path/to/artist2_song2_image.jpg',
     // ... and so on
   };
+  
 
   return (
     <div>
       <ul className="text-black w-full">
         {songs.map((song, index) => {
           const { artist, songName } = getArtistAndSongName(song);
-          const songImage = songImages[song] || './Aligqumze.png'; 
+          const songImage = songImages[song] || './Aligqumze.png';
 
+          const audioSource = `/audios/${encodeURIComponent(song)}.mp3`; // Add .mp3 extension
+
+            
           return (
             <li key={index} className="py-2 border-b border-gray-400 flex items-center">
               <div className="mr-4">
@@ -53,6 +58,16 @@ const MusicList = () => {
                 <br />
                 <span>{removeFileExtension(songName)}</span>
               </div>
+              <div className="ml-auto flex items-center space-x-4">
+                <AudioPlayer song={song} audioSource={audioSource} />
+                <a
+                  className="text-green-500"
+                  href={`/api/download/${encodeURIComponent(song)}`}
+                  download
+                >
+                  Download
+                </a>
+              </div>
             </li>
           );
         })}
@@ -62,9 +77,4 @@ const MusicList = () => {
 };
 
 export default MusicList;
-
-
-
-
-
 

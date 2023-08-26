@@ -7,7 +7,7 @@ import HeroComponent from '@/components/HeroSection';
 import Navbar from '@/components/NavBar';
 
 interface Audio {
-  id: string;
+  id: string; 
   url: string;
   artist: string;
   songName: string;
